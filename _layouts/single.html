@@ -1,0 +1,36 @@
+{% raw %}
+{% include head.html %}
+
+<body class="layout--single">
+  {% include masthead.html %}
+  <main id="main" role="main">
+    <article class="page">
+      <div class="page__inner-wrap">
+        <header>
+          <h1>{{ page.title }}</h1>
+        </header>
+
+        <section class="page__content">
+          {{ content }}
+        </section>
+
+        <footer class="page__meta">
+          <hr>
+
+          {% if page.previous %}
+          <p>⬅️ Back: <a href="{{ page.previous.url }}">{{ page.previous.title }}</a></p>
+          {% endif %}
+
+          {% if page.next %}
+          <p>➡️ Next: <a href="{{ page.next.url }}">{{ page.next.title }}</a></p>
+          {% endif %}
+
+          <p>📚 <a href="{{ site.baseurl }}/">Return to Table of Contents</a></p>
+        </footer>
+      </div>
+    </article>
+  </main>
+
+  {% include footer.html %}
+</body>
+{% endraw %}
