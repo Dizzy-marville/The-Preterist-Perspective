@@ -9,7 +9,7 @@ classes: wide
 > — Luke 1:4
 
 Welcome to **The Unified Gospel Narrative**—a harmonized, expanded retelling of the life of Christ.  
-Explore each chapter in narrative order below:
+Explore each chapter in narrative order below: 
 
 ---
 
