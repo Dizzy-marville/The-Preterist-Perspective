@@ -1,7 +1,8 @@
+---
 title: "Chapter 1: The Angel and the Forerunner"
 date: 2025-07-05
 categories: [gospel, narrative]
-
+---
 
 **Chapter 1
 The Angel and the Forerunner: Zechariah and Elizabeth**
