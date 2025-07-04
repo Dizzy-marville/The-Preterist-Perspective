@@ -1,10 +1,11 @@
 ---
-layout: single   
+layout: single
 title: "Chapter 1 – The Angel and the Forerunner: Zechariah and Elizabeth"
-date: 2025-07-04
+date: 2025-07-05
 author: Dennis
 categories: gospel unified-narrative
 ---
+
 
 
 **Chapter 1
