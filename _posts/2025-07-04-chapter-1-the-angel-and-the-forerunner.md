@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: single   
 title: "Chapter 1 – The Angel and the Forerunner: Zechariah and Elizabeth"
 date: 2025-07-04
 author: Dennis
