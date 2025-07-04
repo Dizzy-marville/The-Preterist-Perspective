@@ -25,3 +25,14 @@ This narrative is a creative theological harmony designed to honor the structure
 ---
 🕊️ A work in progress by Dennis  
 🔗 [View the repository](https://github.com/dizzy-marville/unified-gospel-narrative)
+
+
+---
+
+## 📜 Posts Detected by Jekyll
+
+<ul>
+  {% for post in site.posts %}
+    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
