@@ -16,7 +16,7 @@ Explore each chapter in narrative order below:
 ## 📖 Table of Contents
 
 1. [Prologue – The Silence and the Stirring](/unified-gospel-narrative/2025/07/04/prologue-the-silence-and-the-stirring.html)
-2. [Chapter 1 – The Angel and the Forerunner](/unified-gospel-narrative/2025/07/05/chapter-1-the-angel-and-the-forerunner.html)
+2. [Chapter 1 – The Angel and the Forerunner](/unified-gospel-narrative/2025/07/04/chapter-1-the-angel-and-the-forerunner.html)
 3. *(Chapter 2 – Coming Soon…)*
 
 ---
