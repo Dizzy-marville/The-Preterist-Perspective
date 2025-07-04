@@ -7,7 +7,7 @@ categories: gospel unified-narrative
 ---
 
 
-“When the fullness of time had come, God sent forth His Son…” – Galatians 4:4   
+“When the fullness of time had come, God sent forth His Son…” –  Galatians 4:4   
 
 The story that follows is not a mere biography. It is a convergence of voices, a tapestry woven from eyewitness accounts, ancient prophecies, and Spirit-breathed revelation. This unified narrative is not crafted to flatten the distinct beauty of the four Gospel witnesses—Matthew, Mark, Luke, and John—but to illuminate the single, radiant arc they proclaim: the advent of the Kingdom of God through Jesus the Messiah.
 In the quiet backwaters of Judea, the divine invaded history—not as myth, but as Word made flesh. His voice echoed through temple courts and wilderness paths, through storm-lashed seas and tear-streaked alleys. His hands healed, embraced, broke bread, and bore nails. His presence—veiled in frailty, yet burning with divine purpose—redrew the boundary between heaven and earth.
