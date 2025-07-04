@@ -2,6 +2,7 @@ title: The Unified Gospel Library
 description: An expanded harmony of the Gospels with prophetic and historical insight.
 remote_theme: "mmistakes/minimal-mistakes@4.27.1"
 baseurl: "/unified-gospel-narrative"
+permalink: /:categories/:year/:month/:day/:title:output_ext
 plugins:
   - jekyll-include-cache
   - jekyll-feed
