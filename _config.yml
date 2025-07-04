@@ -1,0 +1,6 @@
+title: The Unified Gospel Library
+description: An expanded harmony of the Gospels with prophetic and historical insight.
+remote_theme: "mmistakes/minimal-mistakes@4.27.1"
+plugins:
+  - jekyll-include-cache
+markdown: kramdown
