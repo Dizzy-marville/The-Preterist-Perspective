@@ -1,5 +1,5 @@
-**Chapter 1   
-The Angel and the Forerunner: Zechariah and Elizabeth**
+**Chapter 1 The Angel and the Forerunner: Zechariah and Elizabeth** 
+The Angel and the Forerunner: Zechariah and Elizabeth
 "In the days of Herod, king of Judea, there was a priest named Zechariah..."
 — Luke 1:5
 
