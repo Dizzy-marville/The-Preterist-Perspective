@@ -28,10 +28,16 @@
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
+    // Load circular sprite texture
+    const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
+
     const material = new THREE.PointsMaterial({
+      map: sprite,
       color: 0xffccff,
       size: 1.5,
-      sizeAttenuation: false // Prevent size distortion by distance
+      transparent: true,
+      alphaTest: 0.5,
+      depthWrite: false
     });
 
     const particles = new THREE.Points(geometry, material);
@@ -59,7 +65,7 @@
 
         // Gentle pull logic
         if (dist < 40) {
-          const pullStrength = 0.3 / dist;
+          const pullStrength = 0.2 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
