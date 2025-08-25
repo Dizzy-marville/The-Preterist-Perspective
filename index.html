@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mouse-Responsive Ritual Field</title>
+  <title>Gravitational Ritual Field</title>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
     canvas { display: block; }
@@ -58,15 +58,16 @@
     function animate() {
       requestAnimationFrame(animate);
       const posArray = geometry.attributes.position.array;
-      const pullStrength = 0.01;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
 
-        // Direct pull toward mouse
         const dx = mouse.x - posArray[ix];
         const dy = mouse.y - posArray[ix + 1];
         const dz = mouse.z - posArray[ix + 2];
+
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.001;
+        const pullStrength = 0.5 / dist;
 
         posArray[ix] += dx * pullStrength;
         posArray[ix + 1] += dy * pullStrength;
