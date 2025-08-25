@@ -21,18 +21,13 @@
 
     const particleCount = 1000;
     const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
     let mouse = new THREE.Vector3();
 
     for (let i = 0; i < particleCount; i++) {
       const ix = i * 3;
-      positions[ix] = (Math.random() - 0.5) * 20;
-      positions[ix + 1] = (Math.random() - 0.5) * 20;
-      positions[ix + 2] = (Math.random() - 0.5) * 20;
-
-      velocities[ix] = (Math.random() - 0.5) * 0.05;
-      velocities[ix + 1] = (Math.random() - 0.5) * 0.05;
-      velocities[ix + 2] = (Math.random() - 0.5) * 0.05;
+      positions[ix] = (Math.random() - 0.5) * 40;
+      positions[ix + 1] = (Math.random() - 0.5) * 40;
+      positions[ix + 2] = (Math.random() - 0.5) * 40;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -46,7 +41,7 @@
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Visual mouse anchor (optional)
+    // Optional: mouse anchor orb
     const mouseAnchor = new THREE.Mesh(
       new THREE.SphereGeometry(0.2, 16, 16),
       new THREE.MeshBasicMaterial({ color: 0xff00ff })
@@ -63,25 +58,19 @@
     function animate() {
       requestAnimationFrame(animate);
       const posArray = geometry.attributes.position.array;
-      const pullStrength = 0.002;
+      const pullStrength = 0.01;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
 
-        // Bounce motion
-        posArray[ix] += velocities[ix];
-        posArray[ix + 1] += velocities[ix + 1];
-        posArray[ix + 2] += velocities[ix + 2];
+        // Direct pull toward mouse
+        const dx = mouse.x - posArray[ix];
+        const dy = mouse.y - posArray[ix + 1];
+        const dz = mouse.z - posArray[ix + 2];
 
-        // Mouse pull
-        posArray[ix] += (mouse.x - posArray[ix]) * pullStrength;
-        posArray[ix + 1] += (mouse.y - posArray[ix + 1]) * pullStrength;
-        posArray[ix + 2] += (mouse.z - posArray[ix + 2]) * pullStrength;
-
-        // Bounce back
-        if (Math.abs(posArray[ix]) > 20) velocities[ix] *= -1;
-        if (Math.abs(posArray[ix + 1]) > 20) velocities[ix + 1] *= -1;
-        if (Math.abs(posArray[ix + 2]) > 20) velocities[ix + 2] *= -1;
+        posArray[ix] += dx * pullStrength;
+        posArray[ix + 1] += dy * pullStrength;
+        posArray[ix + 2] += dz * pullStrength;
       }
 
       // Breathing pulse
