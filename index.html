@@ -71,12 +71,14 @@
     }
 
     function animate() {
-      requestAnimationFrame(animate);
-      particles.forEach(p => p.rotation.x += 0.001);
-      renderer.render(scene, camera);
-    }
-    animate();
-    function scatterParticles() {
+  requestAnimationFrame(animate);
+  particles.forEach(p => p.rotation.x += 0.001);
+  renderer.render(scene, camera);
+}
+animate(); // ← this is where your animation loop ends
+
+// 🌀 Scatter effect on link click
+function scatterParticles() {
   particles.forEach(p => {
     const dx = (Math.random() - 0.5) * 2;
     const dy = (Math.random() - 0.5) * 2;
@@ -88,10 +90,13 @@
 }
 
 document.querySelectorAll('.ritual-link').forEach(link => {
-  link.addEventListener('click', () => {
-    scatterParticles();
+  link.addEventListener('click', (e) => {
+    e.preventDefault(); // Stop instant navigation
+    scatterParticles(); // Trigger ambient scatter
+
+    // Delay navigation by 400ms
+    setTimeout(() => {
+      window.location.href = link.href;
+    }, 400);
   });
 });
-  </script>
-</body>
-</html>
