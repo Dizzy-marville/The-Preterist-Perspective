@@ -1,9 +1,27 @@
---- 
+---
 title: The Preterist Perspective
 ---
 
 # The Preterist Perspective
 
-A poetic unfolding of fulfilled prophecy, sacred memory, and mythic consequence.
+This series reflects my journey through the Gospel—an unfolding path of understanding God’s Word and the sacred fulfillment of prophecy.
 
-Welcome to a modular archive of sacred narrative—each page a vessel of silence, resonance, and ritual clarity.
+---
+
+## 📜 Sacred Themes
+
+- Fulfilled prophecy  
+- Narrative unity  
+- Ritual silence  
+
+---
+
+## 🧭 Explore Further
+
+- [Prologue – The Silence and the Stirring](prologue.md)  
+- [Chapter 1 – The Angel and the Forerunner](chapter1.md)  
+- [About This Project](about.md)  
+
+---
+
+_“The Word became flesh and dwelt among us…” — John 1:14_
