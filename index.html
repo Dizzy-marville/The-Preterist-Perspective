@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Minimal Particle Field</title>
+  <title>Mouse-Responsive Ritual Field</title>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
     canvas { display: block; }
@@ -22,6 +22,7 @@
     const particleCount = 1000;
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
+    let mouse = new THREE.Vector3();
 
     for (let i = 0; i < particleCount; i++) {
       const ix = i * 3;
@@ -45,21 +46,38 @@
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = -(e.clientY / window.innerHeight) * 2 + 1;
+      mouse.set(x, y, 0.5).unproject(camera);
+    });
+
     function animate() {
       requestAnimationFrame(animate);
       const posArray = geometry.attributes.position.array;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
+
+        // Orbital drift
         posArray[ix] += velocities[ix];
         posArray[ix + 1] += velocities[ix + 1];
         posArray[ix + 2] += velocities[ix + 2];
 
-        // Bounce back if out of bounds
+        // Mouse pull
+        posArray[ix] += (mouse.x - posArray[ix]) * 0.0005;
+        posArray[ix + 1] += (mouse.y - posArray[ix + 1]) * 0.0005;
+        posArray[ix + 2] += (mouse.z - posArray[ix + 2]) * 0.0005;
+
+        // Bounce back
         if (Math.abs(posArray[ix]) > 20) velocities[ix] *= -1;
         if (Math.abs(posArray[ix + 1]) > 20) velocities[ix + 1] *= -1;
         if (Math.abs(posArray[ix + 2]) > 20) velocities[ix + 2] *= -1;
       }
+
+      // Breathing pulse
+      const scale = 1 + 0.05 * Math.sin(Date.now() * 0.002);
+      particles.scale.set(scale, scale, scale);
 
       geometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
