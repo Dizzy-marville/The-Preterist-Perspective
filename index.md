@@ -1,3 +1,9 @@
+---
+title: The Preterist Perspective
+---
+
 # The Preterist Perspective
 
-This series reflects my journey through the Gospel—an unfolding path of understanding God's Word and the sacred fulfillment of prophecy.
+A poetic unfolding of fulfilled prophecy, sacred memory, and mythic consequence.
+
+Welcome to a modular archive of sacred narrative—each page a vessel of silence, resonance, and ritual clarity.
