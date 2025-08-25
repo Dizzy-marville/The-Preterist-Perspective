@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Memory-Driven Ritual Field</title>
+  <title>Mythic Particle Field</title>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
     canvas { display: block; }
@@ -43,25 +43,27 @@
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.3
+      size: 0.3,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Optional: mouse anchor orb
-    const mouseAnchor = new THREE.Mesh(
-      new THREE.SphereGeometry(0.2, 16, 16),
-      new THREE.MeshBasicMaterial({ color: 0xff00ff })
-    );
-    scene.add(mouseAnchor);
+    // Load circular texture to remove square artifacts
+    const loader = new THREE.TextureLoader();
+    loader.load('https://threejs.org/examples/textures/sprites/circle.png', texture => {
+      material.map = texture;
+      material.needsUpdate = true;
+    });
 
+    // Mouse tracking (no visible orb)
     document.addEventListener('mousemove', e => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
       mouse.set(x, y, 0.5).unproject(camera);
-      mouseAnchor.position.copy(mouse);
     });
 
     function animate() {
@@ -82,9 +84,9 @@
 
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.001;
 
-        if (dist < 10) {
-          // Pull toward mouse
-          const pullStrength = 0.5 / dist;
+        if (dist < 20) {
+          // Gentle pull toward mouse
+          const pullStrength = 0.3 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
