@@ -25,7 +25,6 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // ✨ Create particle geometry
     const particleCount = 1000;
     const positions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i++) {
@@ -36,14 +35,14 @@
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-  color: 0xffffff,
-  size: 0.05,
-  sizeAttenuation: true,
-  transparent: true,
-  opacity: 0.8,
-  blending: THREE.AdditiveBlending,
-  depthWrite: false
-});
+      color: 0xffffff,
+      size: 0.05,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.8,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
@@ -55,26 +54,26 @@
     });
 
     function animate() {
-  requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
 
-  particles.rotation.y += 0.001;
-  particles.rotation.x += 0.0005;
+      // Rotate the whole field
+      particles.rotation.y += 0.001;
+      particles.rotation.x += 0.0005;
 
-  renderer.render(scene, camera);
-}
-
-      const positions = particles.geometry.attributes.position.array;
+      // Drift particles toward mouse
+      const posArray = particles.geometry.attributes.position.array;
       const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
-        positions[ix] += (vector.x - positions[ix]) * 0.001;
-        positions[ix + 1] += (vector.y - positions[ix + 1]) * 0.001;
+        posArray[ix] += (vector.x - posArray[ix]) * 0.001;
+        posArray[ix + 1] += (vector.y - posArray[ix + 1]) * 0.001;
       }
 
       particles.geometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
     }
+
     animate();
   </script>
 </body>
