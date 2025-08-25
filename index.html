@@ -28,13 +28,12 @@
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    // Load circular sprite texture
     const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
 
     const material = new THREE.PointsMaterial({
       map: sprite,
-      color: 0xffffff,           // Soft white glow
-      size: 2.5,                 // Visible but not overwhelming
+      color: 0xffffff,
+      size: 2.5,
       transparent: true,
       alphaTest: 0.5,
       depthWrite: false
@@ -43,7 +42,7 @@
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    let mouse = new THREE.Vector3(0, 0, 0); // Initialized to center
+    let mouse = new THREE.Vector3(0, 0, 0);
 
     document.addEventListener('mousemove', (event) => {
       const x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -56,6 +55,9 @@
       requestAnimationFrame(animate);
 
       const posArray = geometry.attributes.position.array;
+      const minDist = 5;
+      const maxDist = 40;
+
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
         const dx = mouse.x - posArray[ix];
@@ -63,15 +65,20 @@
         const dz = mouse.z - posArray[ix + 2];
         const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
-        // Gentle pull logic
-        if (dist < 40) {
+        if (dist < maxDist && dist > minDist) {
           const pullStrength = 0.8 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
         }
 
-        // Ambient sway
+        if (dist <= minDist) {
+          const repelStrength = 0.2;
+          posArray[ix] -= dx * repelStrength;
+          posArray[ix + 1] -= dy * repelStrength;
+          posArray[ix + 2] -= dz * repelStrength;
+        }
+
         posArray[ix + 1] += Math.sin(Date.now() * 0.001 + i) * 0.05;
       }
 
