@@ -23,9 +23,13 @@
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
 
-    for (let i = 0; i < particleCount * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 200;
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 200;     // x
+      positions[i + 1] = (Math.random() - 0.5) * 200; // y
+      positions[i + 2] = 0;                           // z locked
       velocities[i] = 0;
+      velocities[i + 1] = 0;
+      velocities[i + 2] = 0;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -45,13 +49,13 @@
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    let mouse = new THREE.Vector3(0, 0, 0);
+    let mouse = new THREE.Vector2(0, 0);
 
     document.addEventListener('mousemove', (event) => {
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = -(event.clientY / window.innerHeight) * 2 + 1;
       const vector = new THREE.Vector3(x, y, 0.5).unproject(camera);
-      mouse.copy(vector);
+      mouse.set(vector.x, vector.y);
     });
 
     function animate() {
@@ -66,15 +70,13 @@
         const ix = i * 3;
         const px = posArray[ix];
         const py = posArray[ix + 1];
-        const pz = posArray[ix + 2];
 
         const dx = mouse.x - px;
         const dy = mouse.y - py;
-        const dist = Math.sqrt(dx*dx + dy*dy);
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
         let vx = velocities[ix];
         let vy = velocities[ix + 1];
-        let vz = velocities[ix + 2];
 
         if (dist < maxDist && dist > minDist) {
           const flowStrength = 0.1;
@@ -88,28 +90,23 @@
           vy += fy + dy * pullStrength;
         }
 
-        // Gentle Z shimmer (optional)
-        vz += Math.sin(Date.now() * 0.001 + i) * 0.02;
-
         // Damping
         vx *= 0.85;
         vy *= 0.85;
-        vz *= 0.85;
 
         // Clamp speed
         vx = Math.max(Math.min(vx, maxSpeed), -maxSpeed);
         vy = Math.max(Math.min(vy, maxSpeed), -maxSpeed);
-        vz = Math.max(Math.min(vz, maxSpeed), -maxSpeed);
 
         // Apply velocity
         posArray[ix] += vx;
         posArray[ix + 1] += vy;
-        posArray[ix + 2] += vz;
+        posArray[ix + 2] = 0; // lock Z
 
         // Store velocity
         velocities[ix] = vx;
         velocities[ix + 1] = vy;
-        velocities[ix + 2] = vz;
+        velocities[ix + 2] = 0;
       }
 
       geometry.attributes.position.needsUpdate = true;
