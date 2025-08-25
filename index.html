@@ -63,7 +63,7 @@
 
       const posArray = geometry.attributes.position.array;
       const minDist = 10;
-      const maxDist = 40;
+      const maxDist = 60;
       const maxSpeed = 0.6;
 
       for (let i = 0; i < particleCount; i++) {
@@ -81,13 +81,19 @@
         if (dist < maxDist && dist > minDist) {
           const flowStrength = 0.1;
           const pullStrength = 0.05 / dist;
+          const attractionStrength = 0.05;
 
           const angle = Math.atan2(dy, dx) + Math.PI / 2;
           const fx = Math.cos(angle) * flowStrength;
           const fy = Math.sin(angle) * flowStrength;
 
-          vx += fx + dx * pullStrength;
-          vy += fy + dy * pullStrength;
+          vx += fx + dx * pullStrength + dx * attractionStrength;
+          vy += fy + dy * pullStrength + dy * attractionStrength;
+        } else {
+          // Global drift toward mouse
+          const globalDrift = 0.01;
+          vx += dx * globalDrift;
+          vy += dy * globalDrift;
         }
 
         // Damping
