@@ -21,7 +21,7 @@
 
     const particleCount = 1000;
     const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3); // for damping
+    const velocities = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 200;
@@ -58,7 +58,7 @@
       requestAnimationFrame(animate);
 
       const posArray = geometry.attributes.position.array;
-      const minDist = 8;
+      const minDist = 10;
       const maxDist = 40;
 
       for (let i = 0; i < particleCount; i++) {
@@ -76,23 +76,15 @@
         let vy = velocities[ix + 1];
         let vz = velocities[ix + 2];
 
-        if (dist < maxDist && dist > minDist) {
-          const pullStrength = 0.8 / dist;
-          const angle = 0.3;
+        if (dist < maxDist) {
+          const flowStrength = 0.5;
+          const angle = Math.atan2(dy, dx) + Math.PI / 2;
 
-          const rotatedDx = dx * Math.cos(angle) - dy * Math.sin(angle);
-          const rotatedDy = dx * Math.sin(angle) + dy * Math.cos(angle);
+          const fx = Math.cos(angle) * flowStrength;
+          const fy = Math.sin(angle) * flowStrength;
 
-          vx += rotatedDx * pullStrength;
-          vy += rotatedDy * pullStrength;
-          vz += dz * pullStrength * 0.5;
-        }
-
-        if (dist <= minDist) {
-          const repelStrength = (minDist - dist) * 0.05;
-          vx -= dx * repelStrength;
-          vy -= dy * repelStrength;
-          vz -= dz * repelStrength;
+          vx += fx;
+          vy += fy;
         }
 
         // Ambient sway
