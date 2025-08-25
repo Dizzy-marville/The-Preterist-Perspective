@@ -33,8 +33,8 @@
 
     const material = new THREE.PointsMaterial({
       map: sprite,
-      color: 0xffccff,
-      size: 1.5,
+      color: 0xffffff,           // Soft white glow
+      size: 2.5,                 // Visible but not overwhelming
       transparent: true,
       alphaTest: 0.5,
       depthWrite: false
@@ -65,7 +65,7 @@
 
         // Gentle pull logic
         if (dist < 40) {
-          const pullStrength = 0.2 / dist;
+          const pullStrength = 0.8 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
