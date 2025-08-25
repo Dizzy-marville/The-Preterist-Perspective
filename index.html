@@ -46,28 +46,37 @@
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
+    // Visual mouse anchor (optional)
+    const mouseAnchor = new THREE.Mesh(
+      new THREE.SphereGeometry(0.2, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0xff00ff })
+    );
+    scene.add(mouseAnchor);
+
     document.addEventListener('mousemove', e => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
       mouse.set(x, y, 0.5).unproject(camera);
+      mouseAnchor.position.copy(mouse);
     });
 
     function animate() {
       requestAnimationFrame(animate);
       const posArray = geometry.attributes.position.array;
+      const pullStrength = 0.002;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
 
-        // Orbital drift
+        // Bounce motion
         posArray[ix] += velocities[ix];
         posArray[ix + 1] += velocities[ix + 1];
         posArray[ix + 2] += velocities[ix + 2];
 
         // Mouse pull
-        posArray[ix] += (mouse.x - posArray[ix]) * 0.0005;
-        posArray[ix + 1] += (mouse.y - posArray[ix + 1]) * 0.0005;
-        posArray[ix + 2] += (mouse.z - posArray[ix + 2]) * 0.0005;
+        posArray[ix] += (mouse.x - posArray[ix]) * pullStrength;
+        posArray[ix + 1] += (mouse.y - posArray[ix + 1]) * pullStrength;
+        posArray[ix + 2] += (mouse.z - posArray[ix + 2]) * pullStrength;
 
         // Bounce back
         if (Math.abs(posArray[ix]) > 20) velocities[ix] *= -1;
