@@ -55,7 +55,7 @@
       requestAnimationFrame(animate);
 
       const posArray = geometry.attributes.position.array;
-      const minDist = 5;
+      const minDist = 8;
       const maxDist = 40;
 
       for (let i = 0; i < particleCount; i++) {
@@ -67,13 +67,18 @@
 
         if (dist < maxDist && dist > minDist) {
           const pullStrength = 0.8 / dist;
-          posArray[ix] += dx * pullStrength;
-          posArray[ix + 1] += dy * pullStrength;
-          posArray[ix + 2] += dz * pullStrength;
+          const angle = 0.3;
+
+          const rotatedDx = dx * Math.cos(angle) - dy * Math.sin(angle);
+          const rotatedDy = dx * Math.sin(angle) + dy * Math.cos(angle);
+
+          posArray[ix] += rotatedDx * pullStrength;
+          posArray[ix + 1] += rotatedDy * pullStrength;
+          posArray[ix + 2] += dz * pullStrength * 0.5;
         }
 
         if (dist <= minDist) {
-          const repelStrength = 0.2;
+          const repelStrength = 0.5;
           posArray[ix] -= dx * repelStrength;
           posArray[ix + 1] -= dy * repelStrength;
           posArray[ix + 2] -= dz * repelStrength;
