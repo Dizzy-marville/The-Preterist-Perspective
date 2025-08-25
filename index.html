@@ -2,16 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ritual Field</title>
+  <title>Pulse Field</title>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-    }
-    canvas {
-      display: block;
-    }
+    body { margin: 0; overflow: hidden; background: black; }
+    canvas { display: block; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 </head>
@@ -19,7 +13,7 @@
   <script>
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+    camera.position.z = 10;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -27,13 +21,23 @@
 
     const loader = new THREE.TextureLoader();
     loader.load('https://threejs.org/examples/textures/sprites/circle.png', function(texture) {
-      const particleCount = 1000;
+      const particleCount = 800;
       const positions = new Float32Array(particleCount * 3);
       const velocities = new Float32Array(particleCount * 3);
 
-      for (let i = 0; i < particleCount * 3; i++) {
-        positions[i] = (Math.random() - 0.5) * 10;
-        velocities[i] = 0;
+      for (let i = 0; i < particleCount; i++) {
+        const ix = i * 3;
+        const r = Math.random() * 5;
+        const theta = Math.random() * 2 * Math.PI;
+        const phi = Math.acos(2 * Math.random() - 1);
+
+        positions[ix] = r * Math.sin(phi) * Math.cos(theta);
+        positions[ix + 1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[ix + 2] = r * Math.cos(phi);
+
+        velocities[ix] = (Math.random() - 0.5) * 0.01;
+        velocities[ix + 1] = (Math.random() - 0.5) * 0.01;
+        velocities[ix + 2] = (Math.random() - 0.5) * 0.01;
       }
 
       const geometry = new THREE.BufferGeometry();
@@ -41,7 +45,7 @@
 
       const material = new THREE.PointsMaterial({
         map: texture,
-        size: 0.2,
+        size: 0.3,
         transparent: true,
         blending: THREE.AdditiveBlending,
         depthWrite: false
@@ -59,21 +63,23 @@
 
       function animate() {
         requestAnimationFrame(animate);
-
-        const posArray = particles.geometry.attributes.position.array;
+        const posArray = geometry.attributes.position.array;
 
         for (let i = 0; i < particleCount; i++) {
           const ix = i * 3;
-          const dx = mouse.x - posArray[ix];
-          const dy = mouse.y - posArray[ix + 1];
-          const dz = mouse.z - posArray[ix + 2];
 
-          posArray[ix] += dx * 0.002;
-          posArray[ix + 1] += dy * 0.002;
-          posArray[ix + 2] += dz * 0.002;
+          // Orbit motion
+          posArray[ix] += velocities[ix];
+          posArray[ix + 1] += velocities[ix + 1];
+          posArray[ix + 2] += velocities[ix + 2];
+
+          // Gentle pull toward mouse
+          posArray[ix] += (mouse.x - posArray[ix]) * 0.0005;
+          posArray[ix + 1] += (mouse.y - posArray[ix + 1]) * 0.0005;
+          posArray[ix + 2] += (mouse.z - posArray[ix + 2]) * 0.0005;
         }
 
-        particles.geometry.attributes.position.needsUpdate = true;
+        geometry.attributes.position.needsUpdate = true;
         renderer.render(scene, camera);
       }
 
