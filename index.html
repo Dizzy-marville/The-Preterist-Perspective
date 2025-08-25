@@ -1,14 +1,11 @@
-// === Setup ===
-const particleCount = 300;
-let particles = [];
-
-function initializeParticles() {
-  for (let i = 0; i < particleCount; i++) {
+// === Initialization ===
+function initializeParticles(count) {
+  for (let i = 0; i < count; i++) {
     particles.push({
-      position: randomPosition(),
-      velocity: randomVector(0.5),
-      lifespan: randomLifespan(),
-      color: baseColor(),
+      position: randomWithinCanvas(),
+      velocity: randomSmallVector(),
+      lifespan: randomDuration(),
+      color: baseAmbientHue(),
       opacity: 1
     });
   }
@@ -18,33 +15,29 @@ function initializeParticles() {
 function updateParticles(mousePos, time) {
   for (let p of particles) {
     // --- Flow Field Influence ---
-    let flow = calculateFlow(mousePos, p.position);
-    p.velocity = add(p.velocity, scale(flow, 0.03));
+    let flowVector = calculateFlow(mousePos, p.position);
+    p.velocity = add(p.velocity, scale(flowVector, 0.05));
 
-    // --- Gentle Pull Toward Center ---
+    // --- Pull Logic (gentle orbit) ---
     let pull = subtract(mousePos, p.position);
-    p.velocity = add(p.velocity, scale(pull, 0.01));
+    p.velocity = add(p.velocity, scale(pull, 0.02));
 
-    // --- Time-Based Drift (Breath) ---
-    let drift = { x: Math.sin(time) * 0.01, y: Math.cos(time) * 0.01 };
-    p.velocity = add(p.velocity, drift);
-
-    // --- Sacred Center Protection ---
-    let dist = distance(p.position, mousePos);
-    if (dist < 20) {
-      let repel = normalize(subtract(p.position, mousePos));
-      p.velocity = add(p.velocity, scale(repel, 0.05));
-    }
+    // --- Time-Based Drift (ritual breath) ---
+    let drift = {
+      x: Math.sin(time + p.position.x * 0.01),
+      y: Math.cos(time + p.position.y * 0.01)
+    };
+    p.velocity = add(p.velocity, scale(drift, 0.01));
 
     // --- Motion Update ---
     p.position = add(p.position, p.velocity);
-    p.velocity = scale(p.velocity, 0.95); // damping
+    p.velocity = scale(p.velocity, 0.95); // damping for silence
 
     // --- Visual Consequence ---
-    p.color = updateColorByZone(dist);
+    p.color = updateColorByZone(p.position, mousePos);
     p.opacity = fadeByLifespan(p.lifespan);
 
-    // --- Lifespan Reset ---
+    // --- Ritual Reset ---
     p.lifespan -= 1;
     if (p.lifespan <= 0) {
       resetParticle(p);
@@ -52,26 +45,25 @@ function updateParticles(mousePos, time) {
   }
 }
 
-// === Helpers ===
+// === Flow Field Calculation ===
 function calculateFlow(center, pos) {
-  let dir = normalize(subtract(pos, center));
-  let perp = { x: -dir.y, y: dir.x };
-  return scale(perp, Math.sin(distance(center, pos) * 0.1));
+  let direction = normalize(subtract(pos, center));
+  let perpendicular = { x: -direction.y, y: direction.x };
+  return scale(perpendicular, Math.sin(distance(center, pos) * 0.1));
 }
 
-function updateColorByZone(d) {
-  if (d < 50) return "rgba(255, 255, 200, 0.8)";
-  if (d < 150) return "rgba(200, 180, 255, 0.6)";
-  return "rgba(100, 100, 150, 0.4)";
+// === Color Zones ===
+function updateColorByZone(pos, center) {
+  let d = distance(pos, center);
+  if (d < 50) return "rgba(255, 255, 200, 0.8)";       // pale glow
+  else if (d < 150) return "rgba(200, 180, 255, 0.6)";  // soft hue
+  else return "rgba(100, 100, 150, 0.4)";               // fading ember
 }
 
-function fadeByLifespan(life) {
-  return Math.max(0.1, life / 100);
-}
-
+// === Particle Reset ===
 function resetParticle(p) {
   p.position = randomEdge();
-  p.velocity = randomVector(0.5);
-  p.lifespan = randomLifespan();
+  p.velocity = randomSmallVector();
+  p.lifespan = randomDuration();
   p.opacity = 1;
 }
