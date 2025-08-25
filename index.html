@@ -26,15 +26,17 @@
       const velocities = new Float32Array(particleCount * 3);
 
       for (let i = 0; i < particleCount; i++) {
-        const ix = i * 3;
-        const r = Math.random() * 5;
-        const theta = Math.random() * 2 * Math.PI;
-        const phi = Math.acos(2 * Math.random() - 1);
+  const ix = i * 3;
 
-        positions[ix] = r * Math.sin(phi) * Math.cos(theta);
-        positions[ix + 1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[ix + 2] = r * Math.cos(phi);
+  // Orbital drift
+  const dx = -positions[ix + 1];
+  const dy = positions[ix];
+  const dz = (Math.random() - 0.5) * 0.01;
 
+  positions[ix] += dx * 0.001 + (mouse.x - positions[ix]) * 0.0002;
+  positions[ix + 1] += dy * 0.001 + (mouse.y - positions[ix + 1]) * 0.0002;
+  positions[ix + 2] += dz;
+}
         velocities[ix] = (Math.random() - 0.5) * 0.01;
         velocities[ix + 1] = (Math.random() - 0.5) * 0.01;
         velocities[ix + 2] = (Math.random() - 0.5) * 0.01;
