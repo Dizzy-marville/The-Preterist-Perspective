@@ -28,7 +28,12 @@
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    const material = new THREE.PointsMaterial({ color: 0xffccff, size: 1.5 });
+    const material = new THREE.PointsMaterial({
+      color: 0xffccff,
+      size: 1.5,
+      sizeAttenuation: false // Prevent size distortion by distance
+    });
+
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
@@ -52,15 +57,15 @@
         const dz = mouse.z - posArray[ix + 2];
         const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
-        // Pull logic
+        // Gentle pull logic
         if (dist < 40) {
-          const pullStrength = 1.0 / dist;
+          const pullStrength = 0.3 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
         }
 
-        // Sway logic
+        // Ambient sway
         posArray[ix + 1] += Math.sin(Date.now() * 0.001 + i) * 0.05;
       }
 
