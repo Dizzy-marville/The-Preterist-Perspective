@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Balanced Ritual Field</title>
+  <title>Memory-Driven Ritual Field</title>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
     canvas { display: block; }
@@ -21,13 +21,22 @@
 
     const particleCount = 1000;
     const positions = new Float32Array(particleCount * 3);
+    const homePositions = new Float32Array(particleCount * 3);
     let mouse = new THREE.Vector3();
 
     for (let i = 0; i < particleCount; i++) {
       const ix = i * 3;
-      positions[ix] = (Math.random() - 0.5) * 40;
-      positions[ix + 1] = (Math.random() - 0.5) * 40;
-      positions[ix + 2] = (Math.random() - 0.5) * 40;
+      const x = (Math.random() - 0.5) * 40;
+      const y = (Math.random() - 0.5) * 40;
+      const z = (Math.random() - 0.5) * 40;
+
+      positions[ix] = x;
+      positions[ix + 1] = y;
+      positions[ix + 2] = z;
+
+      homePositions[ix] = x;
+      homePositions[ix + 1] = y;
+      homePositions[ix + 2] = z;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -58,6 +67,7 @@
     function animate() {
       requestAnimationFrame(animate);
       const posArray = geometry.attributes.position.array;
+      const homeArray = homePositions;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
@@ -73,18 +83,20 @@
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.001;
 
         if (dist < 10) {
-          // Gravitational pull within radius
+          // Pull toward mouse
           const pullStrength = 0.5 / dist;
           posArray[ix] += dx * pullStrength;
           posArray[ix + 1] += dy * pullStrength;
           posArray[ix + 2] += dz * pullStrength;
         } else {
-          // Orbital drift outside radius
-          const angle = 0.001;
-          const x = px;
-          const y = py;
-          posArray[ix] = x * Math.cos(angle) - y * Math.sin(angle);
-          posArray[ix + 1] = x * Math.sin(angle) + y * Math.cos(angle);
+          // Drift back toward home
+          const hx = homeArray[ix];
+          const hy = homeArray[ix + 1];
+          const hz = homeArray[ix + 2];
+
+          posArray[ix] += (hx - px) * 0.01;
+          posArray[ix + 1] += (hy - py) * 0.01;
+          posArray[ix + 2] += (hz - pz) * 0.01;
         }
       }
 
