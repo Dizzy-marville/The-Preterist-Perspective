@@ -36,9 +36,14 @@
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.05
-    });
+  color: 0xffffff,
+  size: 0.05,
+  sizeAttenuation: true,
+  transparent: true,
+  opacity: 0.8,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false
+});
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
@@ -50,7 +55,13 @@
     });
 
     function animate() {
-      requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
+
+  particles.rotation.y += 0.001;
+  particles.rotation.x += 0.0005;
+
+  renderer.render(scene, camera);
+}
 
       const positions = particles.geometry.attributes.position.array;
       const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
