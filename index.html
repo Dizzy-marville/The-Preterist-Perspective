@@ -25,20 +25,23 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const particles = [];
-    const geometry = new THREE.SphereGeometry(0.05, 8, 8);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-    for (let i = 0; i < 300; i++) {
-      const particle = new THREE.Mesh(geometry, material);
-      particle.position.set(
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10
-      );
-      scene.add(particle);
-      particles.push(particle);
+    // ✨ Create particle geometry
+    const particleCount = 1000;
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i++) {
+      positions[i] = (Math.random() - 0.5) * 10;
     }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const material = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.05
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
 
     let mouse = { x: 0, y: 0 };
     document.addEventListener('mousemove', e => {
@@ -49,13 +52,16 @@
     function animate() {
       requestAnimationFrame(animate);
 
+      const positions = particles.geometry.attributes.position.array;
       const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
 
-      particles.forEach(p => {
-        p.position.x += (vector.x - p.position.x) * 0.002;
-        p.position.y += (vector.y - p.position.y) * 0.002;
-      });
+      for (let i = 0; i < particleCount; i++) {
+        const ix = i * 3;
+        positions[ix] += (vector.x - positions[ix]) * 0.001;
+        positions[ix + 1] += (vector.y - positions[ix + 1]) * 0.001;
+      }
 
+      particles.geometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
     }
     animate();
