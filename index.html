@@ -76,6 +76,22 @@
       renderer.render(scene, camera);
     }
     animate();
+    function scatterParticles() {
+  particles.forEach(p => {
+    const dx = (Math.random() - 0.5) * 2;
+    const dy = (Math.random() - 0.5) * 2;
+    const dz = (Math.random() - 0.5) * 2;
+    p.position.x += dx;
+    p.position.y += dy;
+    p.position.z += dz;
+  });
+}
+
+document.querySelectorAll('.ritual-link').forEach(link => {
+  link.addEventListener('click', () => {
+    scatterParticles();
+  });
+});
   </script>
 </body>
 </html>
