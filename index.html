@@ -60,6 +60,7 @@
       const posArray = geometry.attributes.position.array;
       const minDist = 10;
       const maxDist = 40;
+      const maxSpeed = 2.0;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
@@ -76,24 +77,31 @@
         let vy = velocities[ix + 1];
         let vz = velocities[ix + 2];
 
-        if (dist < maxDist) {
-          const flowStrength = 0.5;
-          const angle = Math.atan2(dy, dx) + Math.PI / 2;
+        if (dist < maxDist && dist > minDist) {
+          const flowStrength = 0.3;
+          const pullStrength = 0.2 / dist;
 
+          const angle = Math.atan2(dy, dx) + Math.PI / 2;
           const fx = Math.cos(angle) * flowStrength;
           const fy = Math.sin(angle) * flowStrength;
 
-          vx += fx;
-          vy += fy;
+          vx += fx + dx * pullStrength;
+          vy += fy + dy * pullStrength;
+          vz += dz * pullStrength * 0.5;
         }
 
         // Ambient sway
-        vy += Math.sin(Date.now() * 0.001 + i) * 0.05;
+        vy += Math.sin(Date.now() * 0.001 + i) * 0.03;
 
         // Damping
-        vx *= 0.95;
-        vy *= 0.95;
-        vz *= 0.95;
+        vx *= 0.92;
+        vy *= 0.92;
+        vz *= 0.92;
+
+        // Clamp speed
+        vx = Math.max(Math.min(vx, maxSpeed), -maxSpeed);
+        vy = Math.max(Math.min(vy, maxSpeed), -maxSpeed);
+        vz = Math.max(Math.min(vz, maxSpeed), -maxSpeed);
 
         // Apply velocity
         posArray[ix] += vx;
