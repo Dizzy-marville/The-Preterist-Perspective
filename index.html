@@ -1,125 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Mythic Particle Field</title>
-  <style>
-    body { margin: 0; overflow: hidden; background: black; }
-    canvas { display: block; }
-  </style>
-</head>
-<body>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 100;
+// === Initialization ===
+initializeParticles(count) {
+  for each particle:
+    position = random within canvas
+    velocity = random small vector
+    lifespan = random duration
+    color = base ambient hue
+}
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+// === Frame Update ===
+updateParticles(mousePos, time) {
+  for each particle:
+    // Flow Field Influence
+    flowVector = calculateFlow(mousePos, particle.position)
+    particle.velocity += flowVector * 0.05
 
-    const particleCount = 1000;
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
+    // Pull Logic (gentle orbit)
+    pull = (mousePos - particle.position) * 0.02
+    particle.velocity += pull
 
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 200;     // x
-      positions[i + 1] = (Math.random() - 0.5) * 200; // y
-      positions[i + 2] = 0;                           // z locked
-      velocities[i] = 0;
-      velocities[i + 1] = 0;
-      velocities[i + 2] = 0;
-    }
+    // Time-Based Drift (ritual breath)
+    drift = <sin(time), cos(time)> * 0.01
+    particle.velocity += drift
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    // Motion Update
+    particle.position += particle.velocity
+    particle.velocity *= 0.95 // damping for silence
 
-    const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/circle.png');
+    // Visual Consequence
+    particle.color = updateColorByZone(particle.position, mousePos)
+    particle.opacity = fadeByLifespan(particle.lifespan)
 
-    const material = new THREE.PointsMaterial({
-      map: sprite,
-      color: 0xffffff,
-      size: 2.5,
-      transparent: true,
-      alphaTest: 0.5,
-      depthWrite: false
-    });
+    // Ritual Reset
+    if particle.lifespan expired:
+      resetParticle(particle)
+}
 
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
+// === Flow Field Calculation ===
+calculateFlow(center, pos) {
+  direction = normalize(pos - center)
+  perpendicular = rotate90(direction)
+  return perpendicular * sin(distance(center, pos) * 0.1)
+}
 
-    let mouse = new THREE.Vector2(0, 0);
+// === Color Zones ===
+updateColorByZone(pos, center) {
+  d = distance(pos, center)
+  if d < innerThreshold: return pale glow
+  else if d < middleThreshold: return soft hue
+  else: return fading ember
+}
 
-    document.addEventListener('mousemove', (event) => {
-      const x = (event.clientX / window.innerWidth) * 2 - 1;
-      const y = -(event.clientY / window.innerHeight) * 2 + 1;
-      const vector = new THREE.Vector3(x, y, 0.5).unproject(camera);
-      mouse.set(vector.x, vector.y);
-    });
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      const posArray = geometry.attributes.position.array;
-      const minDist = 10;
-      const maxDist = 60;
-      const maxSpeed = 0.6;
-
-      for (let i = 0; i < particleCount; i++) {
-        const ix = i * 3;
-        const px = posArray[ix];
-        const py = posArray[ix + 1];
-
-        const dx = mouse.x - px;
-        const dy = mouse.y - py;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        let vx = velocities[ix];
-        let vy = velocities[ix + 1];
-
-        if (dist < maxDist && dist > minDist) {
-          const flowStrength = 0.1;
-          const pullStrength = 0.05 / dist;
-          const attractionStrength = 0.05;
-
-          const angle = Math.atan2(dy, dx) + Math.PI / 2;
-          const fx = Math.cos(angle) * flowStrength;
-          const fy = Math.sin(angle) * flowStrength;
-
-          vx += fx + dx * pullStrength + dx * attractionStrength;
-          vy += fy + dy * pullStrength + dy * attractionStrength;
-        } else {
-          // Global drift toward mouse
-          const globalDrift = 0.01;
-          vx += dx * globalDrift;
-          vy += dy * globalDrift;
-        }
-
-        // Damping
-        vx *= 0.85;
-        vy *= 0.85;
-
-        // Clamp speed
-        vx = Math.max(Math.min(vx, maxSpeed), -maxSpeed);
-        vy = Math.max(Math.min(vy, maxSpeed), -maxSpeed);
-
-        // Apply velocity
-        posArray[ix] += vx;
-        posArray[ix + 1] += vy;
-        posArray[ix + 2] = 0; // lock Z
-
-        // Store velocity
-        velocities[ix] = vx;
-        velocities[ix + 1] = vy;
-        velocities[ix + 2] = 0;
-      }
-
-      geometry.attributes.position.needsUpdate = true;
-      renderer.render(scene, camera);
-    }
-
-    animate();
-  </script>
-</body>
-</html>
+// === Particle Reset ===
+resetParticle(p) {
+  p.position = random edge
+  p.velocity = random small vector
+  p.lifespan = new random duration
+}
