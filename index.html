@@ -71,10 +71,28 @@
       scene.add(particle);
       particles.push(particle);
     }
+    let mouse = { x: 0, y: 0 };
+
+document.addEventListener('mousemove', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
 
     function animate() {
   requestAnimationFrame(animate);
   particles.forEach(p => p.rotation.x += 0.001);
+      const raycaster = new THREE.Raycaster();
+const mouseVector = new THREE.Vector2(mouse.x, mouse.y);
+raycaster.setFromCamera(mouseVector, camera);
+
+const targetPoint = raycaster.ray.origin.clone().add(raycaster.ray.direction.clone().multiplyScalar(5));
+
+particles.forEach(p => {
+  p.rotation.x += 0.001;
+  p.position.x += (targetPoint.x - p.position.x) * 0.002;
+  p.position.y += (targetPoint.y - p.position.y) * 0.002;
+  p.position.z += (targetPoint.z - p.position.z) * 0.002;
+});
   renderer.render(scene, camera);
 }
 animate(); // ← this is where your animation loop ends
