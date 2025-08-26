@@ -1,1 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🔥 Tribulation Scrolls</title>
+  <link rel="stylesheet" href="../../styles/main.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Tribulation Scrolls</h1>
+    <p class="subtitle">Gateways into suffering, fulfillment, and sacred consequence</p>
 
+    <div class="topics">
+      <a href="matthew24.html" class="topic">📜 Matthew 24</a>
+      <a href="daniel12.html" class="topic">🕰️ Daniel 12</a>
+      <a href="revelation6.html" class="topic">⚔️ Revelation 6</a>
+    </div>
+  </div>
+</body>
+</html>
