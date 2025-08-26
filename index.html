@@ -4,60 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Preterist Perspective</title>
-  <style>
-    <link rel="stylesheet" href="styles/main.css" />
-    }
-
-    .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      color: #666;
-    }
-
-    .topics {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .topic {
-      text-decoration: none;
-      font-size: 1.5rem;
-      padding: 0.75rem 1.5rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 0.8);
-      transition: background-color 0.3s ease;
-    }
-
-    .topic:hover {
-      background-color: #eee;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
   <!-- 🌌 Ambient SVG Background -->
@@ -66,6 +13,13 @@
     <circle cx="500" cy="500" r="200" fill="none" stroke="#444" stroke-opacity="0.03" stroke-width="2"/>
     <circle cx="500" cy="500" r="100" fill="none" stroke="#444" stroke-opacity="0.02" stroke-width="2"/>
   </svg>
+
+  <!-- 📜 Sidebar Scroll Links -->
+  <div class="sidebar">
+    <a href="readme.html" class="topic">📘 README</a>
+    <a href="about.html" class="topic">🧭 About</a>
+    <a href="contact.html" class="topic">✉️ Contact</a>
+  </div>
 
   <!-- 🏛️ Main Content -->
   <div class="container">
@@ -78,7 +32,6 @@
       <a href="ad70.html" class="topic">🏛️ AD 70</a>
       <a href="eschaton.html" class="topic">🌌 Eschaton</a>
       <a href="greek.html" class="topic">🇬🇷 Greek Words</a>
-      <a href="readme.html" class="topic">📘 The Preterist Perspective</a>
     </div>
   </div>
 </body>
