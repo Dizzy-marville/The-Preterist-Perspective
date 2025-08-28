@@ -6,11 +6,40 @@
   <title>The Preterist Perspective</title>
   <link rel="stylesheet" href="styles/main.css" />
   <style>
+    body {
+      margin: 0;
+      font-family: serif;
+      color: #eee;
+      background-color: #111;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      color: #ddd;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 0.5rem;
+    }
     .topics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
-      margin-top: 2rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
     .topic, .gateway {
       display: block;
@@ -49,7 +78,7 @@
   <svg class="background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
     <circle cx="50%" cy="50%" r="300" fill="none" stroke="#444" stroke-opacity="0.05" stroke-width="2"/>
     <circle cx="50%" cy="50%" r="200" fill="none" stroke="#444" stroke-opacity="0.03" stroke-width="2"/>
-    <circle cx="50%" cy="50%" r="100" fill="none" stroke="#444" stroke-opacity="0.02" stroke-width="2"/>
+    <circle cx="50%" cy="50%" r="100" fill="none" stroke="#444" stroke-opacity="0.02"/>
   </svg>
 
   <!-- 📜 Sidebar Scroll Links -->
@@ -64,15 +93,19 @@
     <h1>The Preterist Perspective</h1>
     <p class="subtitle">A vessel for fulfilled prophecy, sacred consequence, and ritual silence</p>
 
+    <!-- 📚 Completed Shelves -->
+    <h2 class="section-title">📚 Completed Shelves</h2>
     <div class="topics-grid">
-      <!-- Existing Gateways -->
       <a href="categories/tribulation/index.html" class="topic">🔥 Tribulation</a>
       <a href="categories/prophecy/index.html" class="topic">📜 Prophecy</a>
       <a href="categories/ad70/index.html" class="gateway">🏛️ AD70</a>
       <a href="categories/eschaten/index.html" class="gateway">⏳ Eschaten</a>
       <a href="categories/greek/index.html" class="gateway">🔤 Greek Words</a>
+    </div>
 
-      <!-- New Series Topics -->
+    <!-- 🧭 Upcoming Series -->
+    <h2 class="section-title">🧭 Upcoming Series</h2>
+    <div class="topics-grid">
       <a href="olivet-discourse.html" class="topic">🧭 Olivet Discourse</a>
       <a href="time-statements.html" class="topic">⏱️ Time Statements</a>
       <a href="coincidences.html" class="topic">🔗 Coincidences</a>
