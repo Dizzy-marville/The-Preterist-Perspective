@@ -1,18 +1,1 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>🧭 Olivet Scrolls</title>
-  <link rel="stylesheet" href="../../styles/main.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>🧭 Olivet Scrolls</h1>
-    <p class="subtitle">Gateways into prophetic geometry and covenant collapse</p>
 
-    <div class="topics">
-      🧭 <a href="olivet-discourse.html">Olivet Discourse — Prophetic Geometry and Covenant Collapse</a>
-    </div>
-  </div>
-</body>
-</html>
